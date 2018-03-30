@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>test-class</title>
+  <style>
+    body{
+      padding-left: 100px;
+    }
+    canvas{
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="test">
+
+  </canvas>
+  <script>
+    var canvas = document.getElementById('test');
+    // canvas.style.backgroundColor = '#000';
+    canvas.height = 600;
+    canvas.width = 1000;
+    var ctx = canvas.getContext("2d");
+    // ctx
+    class Ball{
+      constructor(x,y,color){
+        this.x =x,
+        this.y = y,
+        this.color = color,
+        this.r = 50
+      }
+      draw() {
+        ctx.fillStyle=this.color;
+        ctx.strokeStyle = this.color
+        ctx.beginPath();        
+        ctx.arc(100, 100, 40, 0, 2 * Math.PI);
+        console.log('draw');
+        ctx.fill();
+        // ctx.fillRect(20, 20, 150, 100)
+        ctx.stroke();        
+        
+      }
+    }
+
+    class Dball extends Ball{
+      constructor(x,y,color){
+        super(x,y,color);
+        this.dx = parseInt(Math.random() * (5 - (-5) + 1) + (-5), 10);
+        this.dy = parseInt(Math.random() * (5 - (-5) + 1) + (-5), 10);
+        this.dr = parseInt(Math.random() * (3 - 1 + 1) + 1, 10);
+      }
+    }
+    update() {
+      this.x +=this.dx;
+      this.y+=this.dy;
+      this.r-=this.dr;
+      if (this.r<0) {
+        this.r = 0;
+      }
+    }
+ var arrs = [];
+ let colorarr = ['red','green']
+  </script>
+</body>
+</html>
