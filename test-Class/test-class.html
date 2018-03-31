@@ -1,68 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>test-class</title>
   <style>
-    body{
+    body {
       padding-left: 100px;
     }
-    canvas{
+
+    canvas {
       margin: 0 auto;
     }
   </style>
 </head>
+
 <body>
   <canvas id="test">
 
   </canvas>
   <script>
     var canvas = document.getElementById('test');
-    // canvas.style.backgroundColor = '#000';
+    canvas.style.backgroundColor = '#000';
     canvas.height = 600;
     canvas.width = 1000;
     var ctx = canvas.getContext("2d");
     // ctx
-    class Ball{
-      constructor(x,y,color){
-        this.x =x,
-        this.y = y,
-        this.color = color,
-        this.r = 50
+    class Ball {
+      constructor(x, y, color) {
+        this.x = x,
+          this.y = y,
+          this.color = color,
+          this.r = 50
       }
       draw() {
-        ctx.fillStyle=this.color;
+        ctx.fillStyle = this.color;
         ctx.strokeStyle = this.color
-        ctx.beginPath();        
-        ctx.arc(100, 100, 40, 0, 2 * Math.PI);
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.r, 0, 2 * Math.PI);
         console.log('draw');
         ctx.fill();
         // ctx.fillRect(20, 20, 150, 100)
-        ctx.stroke();        
-        
+        ctx.stroke();
+
       }
     }
 
-    class Dball extends Ball{
-      constructor(x,y,color){
-        super(x,y,color);
+    class Dball extends Ball {
+      constructor(x, y, color) {
+        super(x, y, color);
         this.dx = parseInt(Math.random() * (5 - (-5) + 1) + (-5), 10);
         this.dy = parseInt(Math.random() * (5 - (-5) + 1) + (-5), 10);
         this.dr = parseInt(Math.random() * (3 - 1 + 1) + 1, 10);
       }
-    }
-    update() {
-      this.x +=this.dx;
-      this.y+=this.dy;
-      this.r-=this.dr;
-      if (this.r<0) {
-        this.r = 0;
+      update() {
+        this.x += this.dx;
+        this.y += this.dy;
+        this.r -= this.dr;
+        if (this.r < 0) {
+          this.r = 0;
+        }
       }
     }
- var arrs = [];
- let colorarr = ['red','green']
+
+    var arrs = [];
+    var interval = '';
+    let colorarr = ['red', 'green', 'pink', 'yellow', 'blue', 'orange',
+      'sliver', '#555556', '#666666', '#111', '#222', '#333', '#444', '#777', '#888', '#999', '#aaa', '#bbb', "#ccc",
+      '#ddd', '#eee', '#fff'
+    ]
+    canvas.addEventListener('mousemove', function (e) {
+      console.log(e);
+      let color = colorarr[parseInt(Math.random() * (colorarr.length - 0 + 1) + 0, 10)]
+      let b = new Dball(e.offsetX, e.offsetY, color);
+      arrs.push(b);
+      b.draw();
+      //  display(b,arrs.length-1);
+    })
+    interval = setInterval(function () {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      arrs.forEach(function (val, index) {
+        arrs[index].draw()
+        arrs[index].update();
+        if (arrs[index].r == 0) {
+          arrs.splice(index, 1);
+        }
+        if (arrs[index] && arrs[index].r == 0) {
+          arrs.splice(index, 1);
+        }
+      })
+    }, 50)
+
+    function display(ball) {
+      if (arrs.length) {
+        interval = setInterval(function () {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          arrs.forEach(function (val, index) {
+            arrs[index].draw()
+            arrs[index].update();
+            console.log(arrs[index]);
+            if (arrs[index].r == 0) {
+              arrs.splice(index, 1);
+            }
+          })
+        }, 50)
+      } else if (interval) {
+        clearInterval(interval);
+      }
+    }
   </script>
 </body>
+
 </html>
